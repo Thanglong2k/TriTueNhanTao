@@ -26,6 +26,7 @@ void BFS :: Implement(){
 	Q.push(first);
 	while(Q.size()){
 		auto u=Q.front();
+		cout<<endl<<u<<":";
 		Q.pop();		
 		if(u==last){
 			showWay(first,last);
@@ -37,6 +38,7 @@ void BFS :: Implement(){
 	        if(visited[*itr]!=1){
 	        	visited[*itr]=1;
 	        	Q.push(*itr);
+	        	cout<<*itr<<",";
 	        	M[*itr]=u;
 			}			
 	    }		    

@@ -31,6 +31,7 @@ void BestFirstSearch :: Implement(){
 	Q.push(first);
 	while(Q.size()){
 		auto u=Q.top();
+		cout<<endl<<u.first<<"("<<u.second<<")"<<":";
 		Q.pop();		
 		if(u==last){
 			showWay(first.first,last.first);
@@ -42,6 +43,7 @@ void BestFirstSearch :: Implement(){
 	        if(visited[*itr]!=1){
 	        	visited[*itr]=1;
 	        	Q.push(*itr);
+	        	cout<<itr->first<<"("<<itr->second<<"),";
 	        	M[itr->first]=u.first;
 			}			
 	    }		    
