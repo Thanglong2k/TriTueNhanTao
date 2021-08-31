@@ -12,7 +12,7 @@ class DFS{
 	public:
 		DFS(string f, string l,mapString A);
 		void Implement(string name);
-		void showWay(string first,string last);
+		void showWay(string first,string last,ofstream& out);
 		void writeFile(string name);
 		
 	
@@ -24,20 +24,24 @@ DFS :: DFS(string f, string l,mapString A){
 }
 
 void DFS :: Implement(string name){
-	ofstream out(name);
+	//ofstream out(name);
 	stack<string> S;
 	
 	map<string,int> visited;
 	visited[first]=1;
 	S.push(first);
 	list<string> listStack;
+	listStack.push_back(first);
 	while(S.size()){
 		auto u=S.top();
-		out<<endl<<u<<":";
+		//out<<endl<<u<<":";
 		S.pop();
 		listStack.pop_back();
 		if(u==last){
-			showWay(first,last);
+			A[u]={"TTKT"};
+			V[u]={};
+			writeFile(name);
+			//showWay(first,last);
 			return;
 		}
 		list<string>::iterator itr;    
@@ -47,19 +51,21 @@ void DFS :: Implement(string name){
 	        	visited[*itr]=1;
 	        	S.push(*itr);
 	        	listStack.push_back(*itr);
-	        	out<<*itr<<",";
+	        	//out<<*itr<<",";
 	        	M[*itr]=u;
 			}			
 	    }
 	    V[u]=listStack;
-	}	
+	    
+	}
+	
 }
-void DFS::showWay(string start,string end){
-//	if(start == end) cout<<start;
-//	else {
-//		showWay(start ,M[end]);
-//		cout<<"->"<<end;
-//	}
+void DFS::showWay(string start,string end,ofstream& out){
+	if(start == end) out<<start;
+	else {
+		showWay(start ,M[end],out);
+		out<<"->"<<end;
+	}
 }
 void readFile(string name,string& start,string& end,mapString& Graph){
 	ifstream fileInput; 
@@ -102,18 +108,26 @@ void readFile(string name,string& start,string& end,mapString& Graph){
 void DFS::writeFile(string name){
 	ofstream out(name);
 	mapString::iterator it;
-	mapString::iterator itr1;
-	list<string>::iterator itr; 
+	list<string>::iterator itr;
+	out<<"|"<<setw(20)<<"Dinh xet"<<"|"<<setw(20)<<"Dinh ke"<<"|"<<setw(20)<<"Stack"<<"|"<<endl;
 	for(it=V.begin();it!=V.end();++it){
-		out<<endl<<*it<<"|";
-		   
+		string abc=it->first;
+		out<<"|"<<setw(20)<<abc<<"|";
+		string a="";
 		//duyet list cac dinh ke cua dinh u
-	    for (itr = A[*it].begin(); itr != A[*it].end(); ++itr) {
-	        out<<*itr;		
+	    for (itr = A[abc].begin(); itr != A[abc].end(); ++itr) {
+	        a.append(*itr);		
 	    }
-	    out<<"|";
+	    out<<setw(20)<<a<<"|";
+	    a="";
+	    for (itr = it->second.begin(); itr != it->second.end(); ++itr) {
+	        a.append(*itr);		
+	    }
+	    out<<setw(20)<<a<<"|"<<endl;
 		
 	}
+	out<<"Duong di:";
+	showWay(first,last,out);
 }
 int main(){
 	mapString Graph;
@@ -138,8 +152,7 @@ int main(){
 	
 	readFile("DFS.txt",start,end,Graph);
 	//cout<<start;
-	ofstream fileOutput;
-	fileOutput.open("DFSOut.txt");
+	
 	DFS h= DFS(start,end,Graph);
 	h.Implement("DFSOut.txt");
 	

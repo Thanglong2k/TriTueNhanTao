@@ -1,5 +1,6 @@
-
-A:B,C,D,
-D:F,G,
-G:H,
-H:
+|            Dinh xet|             Dinh ke|               Stack|
+|                   A|                 BCD|                 BCD|
+|                   D|                  FG|                BCFG|
+|                   G|                   H|                BCFH|
+|                   H|                TTKT|                    |
+Duong di:A->D->G->H
