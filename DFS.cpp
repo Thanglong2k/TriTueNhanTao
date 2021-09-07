@@ -2,13 +2,13 @@
 #include <vector>
 using namespace std;
 #define mapString map<string,list<string>>
-
+#define vectorString vector<pair<string,list<string>>>
 class DFS{
 	private:
 		string first,last;
 		mapString A;
 		map<string,string> M;
-		mapString V;
+		vectorString V;
 	public:
 		DFS(string f, string l,mapString A);
 		void Implement(string name);
@@ -36,7 +36,7 @@ void DFS :: Implement(string name){
 		listStack.pop_back();
 		if(u==last){
 			A[u]={"TTKT"};
-			V[u]={};
+			V.push_back({u,{}});
 			writeFile(name);
 			return;
 		}
@@ -50,7 +50,8 @@ void DFS :: Implement(string name){
 	        	M[*itr]=u;
 			}			
 	    }
-	    V[u]=listStack;
+	   
+		V.push_back({u, listStack});
 	    
 	}
 	
@@ -97,8 +98,9 @@ void readFile(string name,string& start,string& end,mapString& Graph){
 }
 void DFS::writeFile(string name){
 	ofstream out(name);
-	mapString::iterator it;
+	vectorString::iterator it;
 	list<string>::iterator itr;
+	
 	out<<"|"<<setw(20)<<"Dinh xet"<<"|"<<setw(20)<<"Dinh ke"<<"|"<<setw(20)<<"Stack"<<"|"<<endl;
 	for(it=V.begin();it!=V.end();++it){
 		string abc=it->first;
@@ -122,23 +124,6 @@ void DFS::writeFile(string name){
 int main(){
 	mapString Graph;
 	string start,end;
-//	Graph.insert({"A",{"B","C","D"}});
-//	Graph.insert({"B",{"E"}});
-//	Graph.insert({"C",{"E","F"}});
-//	Graph.insert({"D",{"G","H"}});
-//	Graph.insert({"E",{"K"}});
-//	Graph.insert({"F",{"K","H"}});
-//	Graph.insert({"G",{"H"}});
-//	Graph.insert({"H",{"I"}});
-//	Graph.insert({"I",{"K"}});
-//	DFS h= DFS("A","K",Graph);
-//	Graph.insert({"A",{"B","C"}});
-//	Graph.insert({"B",{"D"}});
-//	Graph.insert({"C",{"F"}});
-//	Graph.insert({"D",{"G"}});
-//	Graph.insert({"E",{"C"}});
-//	Graph.insert({"F",{"E"}});
-	
 	
 	readFile("DFS.txt",start,end,Graph);
 	//cout<<start;
@@ -147,4 +132,3 @@ int main(){
 	h.Implement("DFSOut.txt");
 	
 }
-

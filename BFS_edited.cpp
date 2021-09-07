@@ -1,13 +1,17 @@
 #include"bits/stdc++.h"
+#include<list>
+#include<vector>
 using namespace std;
+
 #define mapString map<string,list<string>>
+#define vectorString vector<pair<string,list<string>>>
 
 class BFS{
 	private:
 		string first,last;
 		mapString A;
 		map<string,string> M;
-		mapString V;
+		vectorString V;
 	public:
 		BFS(string f, string l,mapString A);
 		void Input();
@@ -73,10 +77,15 @@ void BFS :: Implement(string name){
 	while(Q.size()){
 		auto u=Q.front();
 		Q.pop();	
+<<<<<<< HEAD
 		listStack.pop_front();	
+=======
+		
+		listStack.pop_front();
+>>>>>>> b5dcc8d0db1a5004fd267c8643b3f7116c3f58a4
 		if(u==last){
 			A[u]={"TTKT"};
-			V[u]={};
+			V.push_back({u,{}});
 			writeFile(name);
 			break;
 		}
@@ -88,11 +97,20 @@ void BFS :: Implement(string name){
 	        	visited[*itr]=1;
 	        	Q.push(*itr);
 	        	listStack.push_back(*itr);
+<<<<<<< HEAD
 	        	M[*itr]=u;	        
 			}			
 	    }	
 		V[u]=listStack;
 			    
+=======
+	        	M[*itr]=u;
+			}			
+	    }	
+	    
+		V.push_back({u, listStack});	   
+	
+>>>>>>> b5dcc8d0db1a5004fd267c8643b3f7116c3f58a4
 	}	
 	mapString::iterator itr;
 	for (itr = V.begin(); itr != V.end(); ++itr) {
@@ -108,8 +126,9 @@ void BFS::showWay(string start,string end,ofstream& out){
 }
 void BFS::writeFile(string name){
 	ofstream out(name);
-	mapString::iterator it;
+	vectorString::iterator it;
 	list<string>::iterator itr;
+
 	out<<"BFS"<<endl;
 	out<<"|"<<setw(20)<<"Dinh xet"<<"|"<<setw(20)<<"Dinh ke"<<"|"<<setw(20)<<"Queue"<<"|"<<endl;
 	for(it=V.begin();it!=V.end();++it){
