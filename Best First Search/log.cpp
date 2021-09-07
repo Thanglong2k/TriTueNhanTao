@@ -6,7 +6,6 @@
 using namespace std;
 #define node pair<string, int>
 #define mapNode map<node, list<node>>
-#define vectorNode vector<pair<node, list<node>>>
 
 class BestFirstSearch
 {
@@ -14,7 +13,8 @@ class BestFirstSearch
 	    node first, last;
 	    mapNode A;
 	    map<string, string> M;
-	    vectorNode V;
+	    mapNode V;
+	
 	public:
 	    BestFirstSearch(node f, node l, mapNode A);
 	    void Implement(string name);
@@ -40,46 +40,36 @@ struct compare
 void BestFirstSearch::Implement(string name)
 {
     priority_queue<node, vector<node>, compare> Q;
-    priority_queue<node, vector<node>, compare> temp;
     map<node, int> visited;
     visited[first] = 1;
     Q.push(first);
-
     list<node> listStack;
 	listStack.push_back(first);
     while (Q.size())
     {
         auto u = Q.top();
         Q.pop();
-        listStack.pop_front();
+        listStack.pop_back();
         if (u == last)
         {
         	A[u] = {node("TTKT",0)};
-        	V.push_back({u,{}});
+        	V[u] = {};
         	writeFile(name);
             return;
         }
-
-		for(auto &nei: A[u]){
-			if(visited[nei] != 1){
-				visited[nei] = 1;
-				Q.push(nei);
-				temp.push(nei);
-				M[nei.first] = u.first;
-			}
-		}
-		
-		while(listStack.size()){
-			temp.push(listStack.front());
-			listStack.pop_front();
-		}
-			
-		while(temp.size()){
-			listStack.push_back(temp.top());
-			temp.pop();
-		}
-
-        V.push_back({u,listStack});
+        list<node>::iterator itr;
+        // duyet list cac dinh ke cua dinh u
+        for (itr = A[u].begin(); itr != A[u].end(); ++itr)
+        {
+            if (visited[*itr] != 1)
+            {
+                visited[*itr] = 1;
+                Q.push(*itr);
+                listStack.push_back(*itr);
+                M[itr->first] = u.first;
+            }
+        }
+        V[u] = listStack;
     }
 }
 void BestFirstSearch::showWay(string start, string end, ofstream& out)
@@ -97,8 +87,8 @@ node stringToNode(string input){
 	vector<char> split(input.begin(), input.end());
 	string strValue = "";
 	for(auto s: split) if(isdigit(s))	strValue+=s;
-	node nodez = make_pair(string({split.front()}) , stoi(strValue));
-	return nodez;
+	node nodezz = make_pair(string({split.front()}) , std::stoi(strValue));
+	return nodezz;
 }
 
 vector<string> split(string str, char delimiter)
@@ -106,11 +96,13 @@ vector<string> split(string str, char delimiter)
     vector<string> internal;
     stringstream ss(str);
     string tok;
-    while (getline(ss, tok, delimiter))  internal.push_back(tok);
+    while (getline(ss, tok, delimiter)) {
+        internal.push_back(tok);
+    }
     return internal;
 }
 
-void readFile(string name, node& start, node& end, mapNode& graph)
+void readFile(string name, node& start, node& end, mapNode& Graph)
 {
 	// var
     ifstream fileInput(name);
@@ -122,9 +114,10 @@ void readFile(string name, node& start, node& end, mapNode& graph)
     start = stringToNode(Sstart);
    	end = stringToNode(Send);
    	
-    string line;	getline(fileInput, line); // skip the first line
+    string line;
+    getline(fileInput, line); // skip the first line
     
-    while (getline(fileInput, line))
+    while (std::getline(fileInput, line))
     {
         istringstream iss(line);
         vector<string> sep = split(line, ':');
@@ -140,7 +133,7 @@ void readFile(string name, node& start, node& end, mapNode& graph)
     	}
     	
     	node par = stringToNode(sep[0]);
-		graph[par] = nodeDest;
+		Graph[par] = nodeDest;
     }
     
     fileInput.close();
@@ -148,22 +141,44 @@ void readFile(string name, node& start, node& end, mapNode& graph)
 
 void BestFirstSearch::writeFile(string name){
 	ofstream out(name);
-	out<<"|"<<setw(20)<<"Ver"<<"|"<<setw(20)<<"Neibor"<<"|"<<setw(20)<<"P_Queue"<<"|"<<endl;
+//	mapNode::iterator it;
+//	list<node>::iterator itr;
+	out<<"|"<<setw(20)<<"Act"<<"|"<<setw(20)<<"Neibor"<<"|"<<setw(20)<<"Queue"<<"|"<<endl;
 	for(auto &it: V){
 		node pos = it.first;
 		out<<"|"<<setw(20)<<pos.first<<"|";
-		string builder = "";
-	    for(auto &kv: A[pos])		builder.append(kv.first);	// dinh ke
-	    out<<setw(20)<<builder<<"|";
-	    builder = "";
+		string a = "";
+	    for(auto &kv: A[pos]){
+	    	a.append(kv.first);	// dinh ke
+		}
+	
+	    out<<setw(20)<<a<<"|";
+	    a = "";
 	    
-	    for(auto &z: it.second)		builder.append(z.first);	// prio qu
-	    out<<setw(20)<<builder<<"|"<<endl;
+	    for(auto &z: it.second){
+	    	a.append(z.first);
+		}
+	    out<<setw(20)<<a<<"|"<<endl;
 	}
+//	for(it = V.begin(); it != V.end(); ++it){
+//		node pos = it->first;
+//		out<<"|"<<setw(20)<<pos.first<<"|";
+//		string a = "";
+//	    for(auto &kv: A[pos]){
+//	    	a.append(kv.first);	// dinh ke
+//		}
+//	
+//	    out<<setw(20)<<a<<"|";
+//	    a = "";
+//	    
+//	    for(auto &z: it->second){
+//	    	a.append(z.first);
+//		}
+//	    out<<setw(20)<<a<<"|"<<endl;
+//	}
 	out<<"Way:";
 	showWay(first.first, last.first, out);
 }
-
 int main()
 {
     mapNode Graph;

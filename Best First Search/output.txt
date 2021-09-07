@@ -1,8 +1,7 @@
-|                 Act|              Neibor|               Queue|
-|                   A|                 BCD|                 BCD|
-|                   C|                  EF|                BCEF|
-|                   D|                  GH|               BCEGH|
-|                   H|                   I|               BCEGI|
-|                   I|                   K|               BCEGK|
-|                   K|                TTKT|                    |
-Way:A->D->H->I->K
+|                 Ver|              Neibor|             P_Queue|
+|                   A|                 CDE|                 DEC|
+|                   D|                  FI|                EIFC|
+|                   E|                  GK|               GIFKC|
+|                   G|                  BH|              BHIFKC|
+|                   B|                TTKT|                    |
+Way:A->E->G->B
