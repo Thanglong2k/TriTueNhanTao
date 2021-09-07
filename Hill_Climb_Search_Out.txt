@@ -1,0 +1,6 @@
+|Dinh xet                                |Dinh ke                                 |Stack                                   |
+|A(20)                                   |B(15)C(6)D(7)                           |B(15)D(7)C(6)                           |
+|C(6)                                    |E(10)F(8)                               |B(15)D(7)E(10)F(8)                      |
+|F(8)                                    |K(0)H(3)                                |B(15)D(7)E(10)H(3)K(0)                  |
+|K(0)                                    |TTKT(0)                                 |                                        |
+Duong di:A->C->F->K

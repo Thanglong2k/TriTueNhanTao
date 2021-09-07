@@ -73,12 +73,12 @@ void BFS :: Implement(string name){
 	while(Q.size()){
 		auto u=Q.front();
 		Q.pop();	
-		listStack.pop_back();	
+		listStack.pop_front();	
 		if(u==last){
 			A[u]={"TTKT"};
 			V[u]={};
 			writeFile(name);
-			return;
+			break;
 		}
 		list<string>::iterator itr; 
  
@@ -88,12 +88,16 @@ void BFS :: Implement(string name){
 	        	visited[*itr]=1;
 	        	Q.push(*itr);
 	        	listStack.push_back(*itr);
-	        	M[*itr]=u;
-	        
+	        	M[*itr]=u;	        
 			}			
 	    }	
-		 V[u]=listStack;	    
+		V[u]=listStack;
+			    
 	}	
+	mapString::iterator itr;
+	for (itr = V.begin(); itr != V.end(); ++itr) {
+	       cout<<"-"<<itr->first;		
+	    }
 }
 void BFS::showWay(string start,string end,ofstream& out){
 	if(start == end) out<<start;
@@ -107,7 +111,7 @@ void BFS::writeFile(string name){
 	mapString::iterator it;
 	list<string>::iterator itr;
 	out<<"BFS"<<endl;
-	out<<"|"<<setw(20)<<"Dinh xet"<<"|"<<setw(20)<<"Dinh ke"<<"|"<<setw(20)<<"Stack"<<"|"<<endl;
+	out<<"|"<<setw(20)<<"Dinh xet"<<"|"<<setw(20)<<"Dinh ke"<<"|"<<setw(20)<<"Queue"<<"|"<<endl;
 	for(it=V.begin();it!=V.end();++it){
 		string abc=it->first;
 		out<<"|"<<setw(20)<<abc<<"|";

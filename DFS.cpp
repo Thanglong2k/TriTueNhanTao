@@ -24,9 +24,7 @@ DFS :: DFS(string f, string l,mapString A){
 }
 
 void DFS :: Implement(string name){
-	//ofstream out(name);
 	stack<string> S;
-	
 	map<string,int> visited;
 	visited[first]=1;
 	S.push(first);
@@ -34,14 +32,12 @@ void DFS :: Implement(string name){
 	listStack.push_back(first);
 	while(S.size()){
 		auto u=S.top();
-		//out<<endl<<u<<":";
 		S.pop();
 		listStack.pop_back();
 		if(u==last){
 			A[u]={"TTKT"};
 			V[u]={};
 			writeFile(name);
-			//showWay(first,last);
 			return;
 		}
 		list<string>::iterator itr;    
@@ -51,7 +47,6 @@ void DFS :: Implement(string name){
 	        	visited[*itr]=1;
 	        	S.push(*itr);
 	        	listStack.push_back(*itr);
-	        	//out<<*itr<<",";
 	        	M[*itr]=u;
 			}			
 	    }
@@ -68,8 +63,7 @@ void DFS::showWay(string start,string end,ofstream& out){
 	}
 }
 void readFile(string name,string& start,string& end,mapString& Graph){
-	ifstream fileInput; 
-   	fileInput.open("DFS.txt");
+	ifstream fileInput(name); 
    	if (fileInput.fail())
 	{
 		cout << "Failed to open this file!" << endl;
@@ -82,15 +76,11 @@ void readFile(string name,string& start,string& end,mapString& Graph){
 		char temp[255];
 		fileInput.getline(temp, 255);
 		string line = temp;
-
 		string first="";
-		list<string> listString;
 		for (auto x : line)
-		{
-			
+		{			
 			if (x != ':')
-			{
-				
+			{				
 				if(line[0] == x)
 				{
 					first=x;

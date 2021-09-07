@@ -1,0 +1,12 @@
+BFS
+|            Dinh xet|             Dinh ke|               Queue|
+|                   A|                 BCD|                 BCD|
+|                   B|                   K|                 CDK|
+|                   C|                   E|                 DKE|
+|                   D|                  FG|                KEFG|
+|                   E|                    |                  FG|
+|                   F|                    |                   G|
+|                   G|                   H|                   H|
+|                   H|                TTKT|                    |
+|                   K|                    |                 EFG|
+Duong di:A->D->G->H
