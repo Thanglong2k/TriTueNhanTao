@@ -1,13 +1,17 @@
 #include"bits/stdc++.h"
+#include<list>
+#include<vector>
 using namespace std;
+
 #define mapString map<string,list<string>>
+#define vectorString vector<pair<string,list<string>>>
 
 class BFS{
 	private:
 		string first,last;
 		mapString A;
 		map<string,string> M;
-		mapString V;
+		vectorString V;
 	public:
 		BFS(string f, string l,mapString A);
 		void Input();
@@ -73,10 +77,11 @@ void BFS :: Implement(string name){
 	while(Q.size()){
 		auto u=Q.front();
 		Q.pop();	
-		listStack.pop_back();	
+		
+		listStack.pop_front();
 		if(u==last){
 			A[u]={"TTKT"};
-			V[u]={};
+			V.push_back({u,{}});
 			writeFile(name);
 			return;
 		}
@@ -89,10 +94,11 @@ void BFS :: Implement(string name){
 	        	Q.push(*itr);
 	        	listStack.push_back(*itr);
 	        	M[*itr]=u;
-	        
 			}			
 	    }	
-		 V[u]=listStack;	    
+	    
+		V.push_back({u, listStack});	   
+	
 	}	
 }
 void BFS::showWay(string start,string end,ofstream& out){
@@ -104,10 +110,11 @@ void BFS::showWay(string start,string end,ofstream& out){
 }
 void BFS::writeFile(string name){
 	ofstream out(name);
-	mapString::iterator it;
+	vectorString::iterator it;
 	list<string>::iterator itr;
+
 	out<<"BFS"<<endl;
-	out<<"|"<<setw(20)<<"Dinh xet"<<"|"<<setw(20)<<"Dinh ke"<<"|"<<setw(20)<<"Stack"<<"|"<<endl;
+	out<<"|"<<setw(20)<<"Dinh xet"<<"|"<<setw(20)<<"Dinh ke"<<"|"<<setw(20)<<"Queue"<<"|"<<endl;
 	for(it=V.begin();it!=V.end();++it){
 		string abc=it->first;
 		out<<"|"<<setw(20)<<abc<<"|";
