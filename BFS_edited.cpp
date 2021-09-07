@@ -77,12 +77,9 @@ void BFS :: Implement(string name){
 	while(Q.size()){
 		auto u=Q.front();
 		Q.pop();	
-<<<<<<< HEAD
+
 		listStack.pop_front();	
-=======
-		
-		listStack.pop_front();
->>>>>>> b5dcc8d0db1a5004fd267c8643b3f7116c3f58a4
+
 		if(u==last){
 			A[u]={"TTKT"};
 			V.push_back({u,{}});
@@ -97,20 +94,11 @@ void BFS :: Implement(string name){
 	        	visited[*itr]=1;
 	        	Q.push(*itr);
 	        	listStack.push_back(*itr);
-<<<<<<< HEAD
-	        	M[*itr]=u;	        
-			}			
-	    }	
-		V[u]=listStack;
-			    
-=======
 	        	M[*itr]=u;
 			}			
 	    }	
 	    
 		V.push_back({u, listStack});	   
-	
->>>>>>> b5dcc8d0db1a5004fd267c8643b3f7116c3f58a4
 	}	
 	mapString::iterator itr;
 	for (itr = V.begin(); itr != V.end(); ++itr) {
