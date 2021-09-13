@@ -1,0 +1,16 @@
+--------------------Hướng dẫn nhập file input------------------
+
+- Dòng đầu chứa 2 đỉnh bắt đầu và kết thúc cách nhau bới khoảng trắng với cấu trúc mỗi đỉnh: Tên + "-" + Trọng số (h).
+VD: A-14 D-0
+- Các dòng sau mô tả quan hệ kề của các đỉnh, mỗi dòng là 1 quan hệ kề của mỗi đỉnh:
+	VD:	A-14: B-5*15 C-9*2
+	+ Đỉnh xét và các đỉnh kề ngăn cách bởi ":".
+	+ Giữa các đỉnh kề ngăn cách bởi 1 khoảng trắng : " ".
+	+ Đỉnh xét có cấu trúc giống đỉnh bắt đầu và kết thúc.
+	+ Mỗi đỉnh kề có cấu trúc: Tên +"-"+ Trọng số (h) + "*" + Khoảng cách (k) (VD: A-14*25).
+
+-VD cấu trúc file:
+
+A-14 D-0
+A-14:B-5*15 C-9*2
+B-5:D-0*3
