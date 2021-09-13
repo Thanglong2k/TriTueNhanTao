@@ -2,18 +2,18 @@
 using namespace std;
 #define mapList map<string, list<pair<string, vector<int>>>>
 #define parent map<string,string>
-#define mapStar vector<pair<string , list<starA>>>
-#define mapStarL vector<pair<starA , list<starA>>>
+#define mapStar vector<pair<string , list<Node>>>
+#define mapStarL vector<pair<Node , list<Node>>>
 
 int cost = INT_MAX;
 
-class starA {
+class Node {
 	private:
 	    string TTK;
 	    int k, h, g, f;
 	public:
-		starA(){}	
-	    starA(string TTK, int k, int h, int g, int f)
+		Node(){}	
+	    Node(string TTK, int k, int h, int g, int f)
 	    {
 	        this->TTK = TTK;
 	        this->k = k;
@@ -30,13 +30,13 @@ class starA {
 
 class searchA {
 	private:
-	    starA Nfirst, Nlast;
+	    Node Nfirst, Nlast;
 	    mapList M;
 		parent par;
 		mapStarL V;
 		mapStar V1;
 	public:
-	    searchA(starA first, starA last, mapList M)
+	    searchA(Node first, Node last, mapList M)
 	    {
 	        this->Nfirst = first;
 	        this->Nlast = last;
@@ -50,27 +50,28 @@ class searchA {
 
 struct compare
 {
-    bool operator()(starA a, starA b)
+    bool operator()(Node a, Node b)
     {
-		if(a.getF() == b.getF())	return a.getG() > b.getG();
+		if(a.getF() == b.getF())	return a.getTTK() > b.getTTK();
+		//if(a.getF() == b.getF())	return a.getTTK().compare(b.getTTK());
         return a.getF() < b.getF();
     }
 };
 
 void searchA::Implement(string name)
 {
-    priority_queue<starA, vector<starA>, compare> Q1;
+    priority_queue<Node, vector<Node>, compare> Q1;
     
-    stack<starA> temp;
+    stack<Node> temp;
     //temp.push(Nfirst);
     
-    stack<starA> Q;
+    stack<Node> Q;
     Q.push(Nfirst);
     
-    list<starA> LStack;	// store L
+    list<Node> LStack;	// store L
     LStack.push_back(Nfirst);
     
-    list<starA> L1Stack;	// store L1 - Q
+    list<Node> L1Stack;	// store L1 - Q
     //L1Stack.push_back(Nfirst);
     
     while (Q.size()) {
@@ -82,12 +83,12 @@ void searchA::Implement(string name)
 			{
 				cout<<"TTKt, duong di tam thoi do dai "<<u.getF();
 				cost = u.getF();
-				stack<starA> checkExtMin = Q;
+				stack<Node> checkExtMin = Q;
 				// copy new stack
 				// check f value element of stack 
 				bool minF = false;
 				while(checkExtMin.size()){
-					starA z = checkExtMin.top();
+					Node z = checkExtMin.top();
 					if(z.getF() < u.getF())	minF = true;
 					checkExtMin.pop();
 				}
@@ -105,7 +106,7 @@ void searchA::Implement(string name)
             nei.second[2] = u.getG() + nei.second[0];
             //cout<<nei.second[1]<<"  -  "<<nei.second[0]<<endl;
             nei.second[3] = nei.second[2] + nei.second[1];
-            starA neizz = starA(nei.first, nei.second[0], nei.second[1], nei.second[2], nei.second[3]); 
+            Node neizz = Node(nei.first, nei.second[0], nei.second[1], nei.second[2], nei.second[3]); 
             //cout<<"neizz "<<neizz.getTTK()<<" -  F  - "<<neizz.getF()<<" -  H  - "<<neizz.getH()<<" -  K  - "<<neizz.getK()<<" -  G  - "<<neizz.getG()<<endl;
             Q1.push(neizz);
             //temp.push(neizz);
@@ -125,7 +126,7 @@ void searchA::Implement(string name)
 		
         while(Q1.size())
         {
-        	starA a = Q1.top();
+        	Node a = Q1.top();
 			//cout<<"   - " <<a.getF()<<endl;
 			L1Stack.push_front(a);
 			
@@ -139,15 +140,15 @@ void searchA::Implement(string name)
 			temp.pop();
 		}
 
-		cout<<"\nL1 stack------------";
-		for(auto &z: L1Stack){
-			cout<<z.getTTK()<<"--"<<z.getF()<<" ";	
-		}
-		
-		cout<<"\nL stack------------";
-		for(auto &z: LStack){
-			cout<<z.getTTK()<<"--"<<z.getF()<<" ";	
-		}
+//		cout<<"\nL1 stack------------";
+//		for(auto &z: L1Stack){
+//			cout<<z.getTTK()<<"--"<<z.getF()<<" ";	
+//		}
+//		
+//		cout<<"\nL stack------------";
+//		for(auto &z: LStack){
+//			cout<<z.getTTK()<<"--"<<z.getF()<<" ";	
+//		}
 		
 		cout<<endl;
 		V1.push_back({u.getTTK() , L1Stack});
@@ -187,7 +188,7 @@ void searchA::writeFile(string name)
 	out<<"|"<<setw(10)<<"TT"<<"|"<<setw(10)<<"TTK"<<"|"<<setw(10)<<"k(u,v)"<<"|"<<setw(10)<<"h(v)"
 	<<"|"<<setw(10)<<"g(v)"<<"|"<<setw(10)<<"f(v)"<<"|"<<setw(25)<<"Danh sach L"<<"|"<<setw(40)<<"Danh sach L"<<"|"<<endl;
 	out<<string(133,'-')<<endl;
-	for(auto &it: V){	//vector<pair<string , list<starA>>>
+	for(auto &it: V){	//vector<pair<string , list<Node>>>
 		//node pos = it.first;
 		out<<"|"<<setw(10)<<it.first.getTTK();
 		int i = 0;
@@ -207,7 +208,7 @@ void searchA::writeFile(string name)
 						for(auto &b: l1.second){
 							string f = b.getTTK() + "-";
 							f+= to_string(b.getF());
-							builder.append(f + ' ');	// queue list<starA>
+							builder.append(f + ' ');	// queue list<Node>
 						}
 					}	
 				}
@@ -217,7 +218,7 @@ void searchA::writeFile(string name)
 				{
 					string f = kv.getTTK() + "-";
 					f+= to_string(kv.getF());
-					builder.append(f + ' ');	// queue list<starA>
+					builder.append(f + ' ');	// queue list<Node>
 				}
 				out<<setw(40)<<builder<<"|"<<endl;
 				builder = "";
@@ -237,7 +238,7 @@ void searchA::writeFile(string name)
 		
 	    if(it.first.getTTK() == Nlast.getTTK())	
 		{
-			out<<"| TTKT duowng tam thoi la ";
+			out<<"| TTKT duong tam thoi la ";
 			showWay(Nfirst.getTTK() , Nlast.getTTK(), out);
 			out<<" do dai la "<<it.first.getF();
 			//if(it.second.front.getF != it.first)
@@ -248,20 +249,12 @@ void searchA::writeFile(string name)
 			{
 				string f = kv.getTTK() + "-";
 				f+= to_string(kv.getF());
-				builder.append(f + ' ');	// queue list<starA>
+				builder.append(f + ' ');	// queue list<Node>
 			}
 			out<<setw(40)<<builder<<"|"<<endl;
 		}
 		out<<string(133,'-')<<endl;
 	}
-}
-
-starA stringToNode(string input){
-	vector<char> split(input.begin(), input.end());
-	string strValue = "";
-	for(auto s: split) if(isdigit(s))	strValue+=s;
-	starA z = starA(string({split.front()}) , 0 ,  stoi(strValue), 0, 0);
-	return z;
 }
 
 vector<string> split(string str, char delimiter)
@@ -273,7 +266,14 @@ vector<string> split(string str, char delimiter)
     return internal;
 }
 
-void readFile(string name, starA& start, starA& end, mapList& graph)
+
+Node stringToNode(string input){
+	vector<string> sep = split(input, '-');
+	Node z = Node(sep[0] , 0 ,  stoi(sep[1]), 0, 0);
+	return z;
+}
+
+void readFile(string name, Node& start, Node& end, mapList& graph)
 {
 	// var
     ifstream fileInput(name);
@@ -300,7 +300,7 @@ void readFile(string name, starA& start, starA& end, mapList& graph)
 		for (const string &i: dest) {	
 			vector<string> sub = split(i, '*');	// C-15    9
 			int distance = stoi(sub[1]);	// 9
-			starA rs = stringToNode(sub[0]);	// 15
+			Node rs = stringToNode(sub[0]);	// 15
 			//cout<<rs.getTTK()<<"-"<<rs.getH()<<" - "<<distance<<endl;
 			vector<int> data;
 			data.push_back(distance);	// k
@@ -308,7 +308,7 @@ void readFile(string name, starA& start, starA& end, mapList& graph)
         	nodeDest.push_back(make_pair(rs.getTTK() ,   data));
     	}
     	
-    	starA par = stringToNode(sep[0]);
+    	Node par = stringToNode(sep[0]);
 		graph[par.getTTK()] = nodeDest;
     }
     
@@ -318,7 +318,7 @@ void readFile(string name, starA& start, starA& end, mapList& graph)
 int main()
 {
 	mapList Graph;
-    starA start, end;
+    Node start, end;
 
     readFile("input.txt", start, end, Graph);
     
