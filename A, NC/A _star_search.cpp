@@ -3,6 +3,7 @@ using namespace std;
 #define mapList map<string, list<pair<string, vector<int>>>>
 #define parent map<string,string>
 #define mapStar vector<pair<string , list<Node>>>
+int cost = INT_MAX;
 
 class Node {
 	private:
@@ -66,16 +67,8 @@ void searchA::Implement(string name)
         
         listStack.pop_front();
         if (u.getTTK() == Nlast.getTTK()) {
-//            cout << "Thanh cong";
-//            showWay(Nfirst.getTTK(), u.getTTK());
-//            writeFile(name);
-			
-            //vector<int> end;
-            //M[u.getTTK()] = { { "TTKT",{} } };
+        	cost = u.getF();
         	V.push_back( { u.getTTK(), {u} } );
-        	
-        	//cout<<"-------"<<M[u.getTTK()].second[0];
-        	
         	writeFile(name);
             return;
         }
@@ -87,7 +80,6 @@ void searchA::Implement(string name)
             //cout<<"neizz "<<neizz.getTTK()<<" -  F  - "<<neizz.getF()<<" -  H  - "<<neizz.getH()<<" -  K  - "<<neizz.getK()<<" -  G  - "<<neizz.getG()<<endl;
             Q.push(neizz);
             temp.push(neizz);
-            //listStack.push(neizz);
             par[nei.first] = u.getTTK();
         }
         
@@ -168,6 +160,9 @@ void searchA::writeFile(string name)
 		}
 		out<<string(108,'-')<<endl;
 	}
+	out<<"Duong di la ";
+	showWay(Nfirst.getTTK() , Nlast.getTTK(), out);
+	out<<" do dai "<<cost;
 }
 vector<string> split(string str, char delimiter)
 {
@@ -179,8 +174,13 @@ vector<string> split(string str, char delimiter)
 }
 
 Node stringToNode(string input){
-	vector<string> sep = split(input, '-');
-	Node z = Node(sep[0] , 0 ,  stoi(sep[1]), 0, 0);
+	Node z;
+	if(input.find("-") < input.length()){ //to find ++ 
+	    vector<string> sep = split(input, '-');
+		z = Node(sep[0] , 0 ,  stoi(sep[1]), 0, 0);
+	} else {
+	    z = Node(input, 0, 0, 0, 0);
+	}
 	return z;
 }
 

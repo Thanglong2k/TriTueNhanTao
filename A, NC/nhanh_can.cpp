@@ -53,7 +53,6 @@ struct compare
     bool operator()(Node a, Node b)
     {
 		if(a.getF() == b.getF())	return a.getTTK() > b.getTTK();
-		//if(a.getF() == b.getF())	return a.getTTK().compare(b.getTTK());
         return a.getF() < b.getF();
     }
 };
@@ -186,7 +185,7 @@ void searchA::writeFile(string name)
 {
 	ofstream out(name);
 	out<<"|"<<setw(10)<<"TT"<<"|"<<setw(10)<<"TTK"<<"|"<<setw(10)<<"k(u,v)"<<"|"<<setw(10)<<"h(v)"
-	<<"|"<<setw(10)<<"g(v)"<<"|"<<setw(10)<<"f(v)"<<"|"<<setw(25)<<"Danh sach L"<<"|"<<setw(40)<<"Danh sach L"<<"|"<<endl;
+	<<"|"<<setw(10)<<"g(v)"<<"|"<<setw(10)<<"f(v)"<<"|"<<setw(25)<<"Danh sach L1"<<"|"<<setw(40)<<"Danh sach L"<<"|"<<endl;
 	out<<string(133,'-')<<endl;
 	for(auto &it: V){	//vector<pair<string , list<Node>>>
 		//node pos = it.first;
@@ -255,6 +254,9 @@ void searchA::writeFile(string name)
 		}
 		out<<string(133,'-')<<endl;
 	}
+	out<<"Duong di la ";
+	showWay(Nfirst.getTTK() , Nlast.getTTK(), out);
+	out<<" do dai la "<<cost;
 }
 
 vector<string> split(string str, char delimiter)
@@ -266,10 +268,14 @@ vector<string> split(string str, char delimiter)
     return internal;
 }
 
-
 Node stringToNode(string input){
-	vector<string> sep = split(input, '-');
-	Node z = Node(sep[0] , 0 ,  stoi(sep[1]), 0, 0);
+	Node z;
+	if(input.find("-") < input.length()){ //to find ++ 
+	    vector<string> sep = split(input, '-');
+		z = Node(sep[0] , 0 ,  stoi(sep[1]), 0, 0);
+	} else {
+	    z = Node(input, 0, 0, 0, 0);
+	}
 	return z;
 }
 
